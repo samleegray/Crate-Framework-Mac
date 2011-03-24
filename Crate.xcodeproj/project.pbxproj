@@ -1,0 +1,268 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CE6D74A6133B03F900B8B54B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE6D74A5133B03F900B8B54B /* Cocoa.framework */; };
+		CE6D74B0133B03F900B8B54B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CE6D74AE133B03F900B8B54B /* InfoPlist.strings */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		CE6D74A2133B03F900B8B54B /* Crate.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Crate.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE6D74A5133B03F900B8B54B /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		CE6D74A8133B03F900B8B54B /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		CE6D74A9133B03F900B8B54B /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		CE6D74AA133B03F900B8B54B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		CE6D74AD133B03F900B8B54B /* Crate-Info.plist */ = {isa = PBXFileReference; path = "Crate-Info.plist"; sourceTree = "<group>"; };
+		CE6D74AF133B03F900B8B54B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		CE6D74B1133B03F900B8B54B /* Crate-Prefix.pch */ = {isa = PBXFileReference; path = "Crate-Prefix.pch"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CE6D749E133B03F900B8B54B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE6D74A6133B03F900B8B54B /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CE6D7496133B03F900B8B54B = {
+			isa = PBXGroup;
+			children = (
+				CE6D74AB133B03F900B8B54B /* Crate */,
+				CE6D74A4133B03F900B8B54B /* Frameworks */,
+				CE6D74A3133B03F900B8B54B /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CE6D74A3133B03F900B8B54B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CE6D74A2133B03F900B8B54B /* Crate.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CE6D74A4133B03F900B8B54B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CE6D74A5133B03F900B8B54B /* Cocoa.framework */,
+				CE6D74A7133B03F900B8B54B /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CE6D74A7133B03F900B8B54B /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CE6D74A8133B03F900B8B54B /* AppKit.framework */,
+				CE6D74A9133B03F900B8B54B /* CoreData.framework */,
+				CE6D74AA133B03F900B8B54B /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		CE6D74AB133B03F900B8B54B /* Crate */ = {
+			isa = PBXGroup;
+			children = (
+				CE6D74AC133B03F900B8B54B /* Supporting Files */,
+			);
+			path = Crate;
+			sourceTree = "<group>";
+		};
+		CE6D74AC133B03F900B8B54B /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				CE6D74AD133B03F900B8B54B /* Crate-Info.plist */,
+				CE6D74AE133B03F900B8B54B /* InfoPlist.strings */,
+				CE6D74B1133B03F900B8B54B /* Crate-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		CE6D749F133B03F900B8B54B /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		CE6D74A1133B03F900B8B54B /* Crate */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CE6D74B4133B03F900B8B54B /* Build configuration list for PBXNativeTarget "Crate" */;
+			buildPhases = (
+				CE6D749D133B03F900B8B54B /* Sources */,
+				CE6D749E133B03F900B8B54B /* Frameworks */,
+				CE6D749F133B03F900B8B54B /* Headers */,
+				CE6D74A0133B03F900B8B54B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Crate;
+			productName = Crate;
+			productReference = CE6D74A2133B03F900B8B54B /* Crate.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CE6D7498133B03F900B8B54B /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = CE6D749B133B03F900B8B54B /* Build configuration list for PBXProject "Crate" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = CE6D7496133B03F900B8B54B;
+			productRefGroup = CE6D74A3133B03F900B8B54B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CE6D74A1133B03F900B8B54B /* Crate */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CE6D74A0133B03F900B8B54B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE6D74B0133B03F900B8B54B /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CE6D749D133B03F900B8B54B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		CE6D74AE133B03F900B8B54B /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CE6D74AF133B03F900B8B54B /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		CE6D74B2133B03F900B8B54B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		CE6D74B3133B03F900B8B54B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		CE6D74B5133B03F900B8B54B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Crate/Crate-Prefix.pch";
+				INFOPLIST_FILE = "Crate/Crate-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Debug;
+		};
+		CE6D74B6133B03F900B8B54B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Crate/Crate-Prefix.pch";
+				INFOPLIST_FILE = "Crate/Crate-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CE6D749B133B03F900B8B54B /* Build configuration list for PBXProject "Crate" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CE6D74B2133B03F900B8B54B /* Debug */,
+				CE6D74B3133B03F900B8B54B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CE6D74B4133B03F900B8B54B /* Build configuration list for PBXNativeTarget "Crate" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CE6D74B5133B03F900B8B54B /* Debug */,
+				CE6D74B6133B03F900B8B54B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CE6D7498133B03F900B8B54B /* Project object */;
+}
