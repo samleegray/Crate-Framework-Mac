@@ -48,6 +48,7 @@ size_t writefunc(void *ptr, size_t size, size_t nmemb, char *s)
     SBJsonParser *parser = [[SBJsonParser alloc] init];
     jsonData = [parser objectWithString:stringToParse];
     [parser release];
+    [stringToParse release];
 	
 	return size*nmemb;
 }
@@ -141,6 +142,9 @@ size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s)
 
 	currentDelegate = nil;
     
+    [userpwdString release];
+    [crateIDString release];
+    
 	return(jsonData);
 }
 
@@ -173,6 +177,8 @@ size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s)
 	}
 	
     currentDelegate = nil;
+    
+    [userpwdString release];
 	
 	return(jsonData);
 }
@@ -209,6 +215,8 @@ size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s)
 	
     currentDelegate = nil;
     fclose(currentFile);
+    
+    [downloadURL release];
 	
 	return(jsonData);
 }
@@ -241,6 +249,7 @@ size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s)
 	}
 	
     currentDelegate = nil;
+    [userpwdString release];
 	
 	return(jsonData);
 }
@@ -275,6 +284,9 @@ size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s)
 	}
 	
     currentDelegate = nil;
+    
+    [url release];
+    [userpwdString release];
 	
 	return(jsonData);
 }
@@ -309,6 +321,8 @@ size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s)
 	}
 	
     currentDelegate = nil;
+    [url release];
+    [userpwdString release];
 	
 	return(jsonData);
 }
@@ -347,6 +361,7 @@ size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s)
 	}
 	
     currentDelegate = nil;
+    [userpwdString release];
 	
 	return(jsonData);
 }
@@ -379,6 +394,7 @@ size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s)
 	}
 	
     currentDelegate = nil;
+    [userpwdString release];
 	
 	return(jsonData);
 }
@@ -420,6 +436,8 @@ size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s)
 	}
 	
     currentDelegate = nil;
+    [userpwdString release];
+    [url release];
 	
 	return(jsonData);
 }
@@ -454,6 +472,8 @@ size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s)
 	}
 	
     currentDelegate = nil;
+    [url release];
+    [userpwdString release];
 	
 	return(jsonData);
 }
@@ -469,6 +489,8 @@ size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s)
 	NSMutableString *uniqueFilename = [NSMutableString stringWithFormat:@"%@.jpg", uniqueString];
 	NSString *filePath = [NSTemporaryDirectory() stringByAppendingPathComponent:uniqueFilename];
 	[data writeToURL:[NSURL fileURLWithPath:filePath] atomically:NO];
+    
+    [image release];
 	
 	return([filePath UTF8String]);
 }

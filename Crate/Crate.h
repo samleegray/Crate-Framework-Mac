@@ -45,7 +45,6 @@ NSDictionary *jsonData;
 	CURL *curl;
 	char *stringBuffer;
 	NSString *grabURL;
-	int lastRequestStatus;
     id <CrateDelegate> delegate;
 }
 
