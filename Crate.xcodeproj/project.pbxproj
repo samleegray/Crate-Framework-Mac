@@ -12,23 +12,9 @@
 		CE6D74BA133B049300B8B54B /* Crate.h in Headers */ = {isa = PBXBuildFile; fileRef = CE6D74B7133B049300B8B54B /* Crate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CE6D74BB133B049300B8B54B /* Crate.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6D74B8133B049300B8B54B /* Crate.m */; };
 		CE6D74BC133B049300B8B54B /* CrateDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = CE6D74B9133B049300B8B54B /* CrateDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CE6D74C1133B04FE00B8B54B /* JSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE6D74C0133B04FE00B8B54B /* JSON.framework */; };
-		CE6D74C2133B050000B8B54B /* JSON.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CE6D74C0133B04FE00B8B54B /* JSON.framework */; };
 		CE6D74CE133B061200B8B54B /* libcurl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CE6D74CC133B060100B8B54B /* libcurl.dylib */; };
+		CE758E5213484BAE0058EDD9 /* JSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE758E5113484BAE0058EDD9 /* JSON.framework */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		CE6D74BF133B04C000B8B54B /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				CE6D74C2133B050000B8B54B /* JSON.framework in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		CE6D74A2133B03F900B8B54B /* Crate.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Crate.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -42,8 +28,8 @@
 		CE6D74B7133B049300B8B54B /* Crate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Crate.h; sourceTree = "<group>"; };
 		CE6D74B8133B049300B8B54B /* Crate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Crate.m; sourceTree = "<group>"; };
 		CE6D74B9133B049300B8B54B /* CrateDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CrateDelegate.h; sourceTree = "<group>"; };
-		CE6D74C0133B04FE00B8B54B /* JSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JSON.framework; sourceTree = "<group>"; };
-		CE6D74CC133B060100B8B54B /* libcurl.dylib */ = {isa = PBXFileReference; lastKnownFileType = file; path = libcurl.dylib; sourceTree = "<group>"; };
+		CE6D74CC133B060100B8B54B /* libcurl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libcurl.dylib; sourceTree = "<group>"; };
+		CE758E5113484BAE0058EDD9 /* JSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JSON.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,8 +38,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE6D74A6133B03F900B8B54B /* Cocoa.framework in Frameworks */,
-				CE6D74C1133B04FE00B8B54B /* JSON.framework in Frameworks */,
 				CE6D74CE133B061200B8B54B /* libcurl.dylib in Frameworks */,
+				CE758E5213484BAE0058EDD9 /* JSON.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -80,8 +66,8 @@
 		CE6D74A4133B03F900B8B54B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CE758E5113484BAE0058EDD9 /* JSON.framework */,
 				CE6D74CC133B060100B8B54B /* libcurl.dylib */,
-				CE6D74C0133B04FE00B8B54B /* JSON.framework */,
 				CE6D74A5133B03F900B8B54B /* Cocoa.framework */,
 				CE6D74A7133B03F900B8B54B /* Other Frameworks */,
 			);
@@ -142,7 +128,6 @@
 				CE6D749E133B03F900B8B54B /* Frameworks */,
 				CE6D749F133B03F900B8B54B /* Headers */,
 				CE6D74A0133B03F900B8B54B /* Resources */,
-				CE6D74BF133B04C000B8B54B /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -248,21 +233,15 @@
 				COPY_PHASE_STRIP = NO;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)\"",
-				);
+				FRAMEWORK_SEARCH_PATHS = "\"/Users/isamgray/Dropbox/Crate\"";
 				FRAMEWORK_VERSION = A;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Crate/Crate-Prefix.pch";
 				INFOPLIST_FILE = "Crate/Crate-Info.plist";
-				INSTALL_PATH = "@executable_path/../Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)\"",
-				);
+				INSTALL_PATH = "@loader_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = framework;
 			};
@@ -276,20 +255,14 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)\"",
-				);
+				FRAMEWORK_SEARCH_PATHS = "\"/Users/isamgray/Dropbox/Crate\"";
 				FRAMEWORK_VERSION = A;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Crate/Crate-Prefix.pch";
 				INFOPLIST_FILE = "Crate/Crate-Info.plist";
-				INSTALL_PATH = "@executable_path/../Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)\"",
-				);
+				INSTALL_PATH = "@loader_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = framework;
 			};
@@ -314,6 +287,7 @@
 				CE6D74B6133B03F900B8B54B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

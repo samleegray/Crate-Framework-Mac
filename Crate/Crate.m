@@ -12,30 +12,44 @@
 #pragma mark -
 #pragma mark libcurl callbacks
 
-int uploadProgress(void *blah, double t, double d, double ultotal, double ulnow)
+int uploadProgress(void *s, double t, double d, double ultotal, double ulnow)
 {
+    Crate *selfCrate = (Crate *)s;
+    
 	int size = 100;
 	double fractionDownloaded = ulnow / ultotal;
 	int amountFull = round(fractionDownloaded * size);
-	
-    [currentDelegate uploadProgress:amountFull];
+    
+    if(amountFull != [selfCrate lastPercent])
+    {
+        [[selfCrate delegate] uploadProgress:amountFull];
+        [selfCrate setLastPercent:amountFull];
+    }
     
 	return 0;
 }
 
-int downloadProgress(void *blah, double t, double d, double ultotal, double ulnow)
+int downloadProgress(void *s, double t, double d, double ultotal, double ulnow)
 {
+    Crate *selfCrate = (Crate *)s;
+    
 	int size = 100;
 	double fractionDownloaded = d / t;
 	int amountFull = round(fractionDownloaded * size);
-	
-    [currentDelegate uploadProgress:amountFull];
+    
+    if(amountFull != [selfCrate lastPercent])
+    {
+        [[selfCrate delegate] downloadProgress:amountFull];
+        [selfCrate setLastPercent:amountFull];
+    }
     
 	return 0;
 }
 
-size_t writefunc(void *ptr, size_t size, size_t nmemb, char *s)
+size_t writefunc(void *ptr, size_t size, size_t nmemb, void *s)
 {	
+    Crate *selfCrate = (Crate *)s;
+    
     NSMutableString *stringToParse = [[NSMutableString alloc] initWithUTF8String:(const char *)ptr];
     
     if(stringToParse != nil)
@@ -46,7 +60,7 @@ size_t writefunc(void *ptr, size_t size, size_t nmemb, char *s)
     }
 	
     SBJsonParser *parser = [[SBJsonParser alloc] init];
-    jsonData = [parser objectWithString:stringToParse];
+    [selfCrate setJsonData:[parser objectWithString:stringToParse]];
     [parser release];
     [stringToParse release];
 	
@@ -55,12 +69,18 @@ size_t writefunc(void *ptr, size_t size, size_t nmemb, char *s)
 
 size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s)
 {	    
-    fwrite(ptr, size, nmemb, currentFile);
+    Crate *selfCrate = (Crate *)s;
+    fwrite(ptr, size, nmemb, [selfCrate currentFile]);
 	
 	return size*nmemb;
 }
 
 @implementation Crate
+
+@synthesize jsonData;
+@synthesize currentFile;
+@synthesize delegate;
+@synthesize lastPercent;
 
 -(id)init
 {
@@ -96,7 +116,6 @@ size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s)
 
 -(NSDictionary *)uploadFile:(NSString *)filePathString username:(NSString *)usernameString password:(NSString *)passwordString crate:(int)crateID
 {
-    currentDelegate = delegate;
 	CURLcode res2;
 	
     NSString *userpwdString = [[NSString alloc] initWithFormat:@"%@:%@", usernameString, passwordString];
@@ -128,9 +147,10 @@ size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s)
         curl_easy_setopt(curl, CURLOPT_USERPWD, [userpwdString UTF8String]);
 		curl_easy_setopt(curl, CURLOPT_HTTPPOST, formpost2);
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writefunc);
-		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &stringBuffer);
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)self);
 		curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);
 		curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION, uploadProgress);
+        curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, (void *)self);
 		
 		res2 = curl_easy_perform(curl);
         
@@ -139,9 +159,7 @@ size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s)
 		curl_formfree(formpost2);
 		curl_slist_free_all (headerlist2);
 	}
-
-	currentDelegate = nil;
-    
+   
     [userpwdString release];
     [crateIDString release];
     
@@ -150,7 +168,6 @@ size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s)
 
 -(NSDictionary *)validateUser:(NSString *)usernameString password:(NSString *)passwordString
 {
-    currentDelegate = delegate;
 	CURLcode res2;
 	
 	struct curl_httppost *formpost2=NULL;
@@ -168,15 +185,13 @@ size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s)
         curl_easy_setopt(curl, CURLOPT_USERPWD, [userpwdString UTF8String]);
 		curl_easy_setopt(curl, CURLOPT_HTTPGET, formpost2);
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writefunc);
-		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &stringBuffer);
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)self);
 		res2 = curl_easy_perform(curl);
         curl_easy_reset(curl);
 		
 		curl_formfree(formpost2);
 		curl_slist_free_all (headerlist2);
 	}
-	
-    currentDelegate = nil;
     
     [userpwdString release];
 	
@@ -185,7 +200,6 @@ size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s)
 
 -(NSDictionary *)downloadFile:(NSString *)shortURL destination:(NSString *)toDirectory
 {
-    currentDelegate = delegate;
 	CURLcode res2;
 	
 	struct curl_httppost *formpost2=NULL;
@@ -203,9 +217,10 @@ size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s)
 		curl_easy_setopt(curl, CURLOPT_URL, [downloadURL UTF8String]);
 		curl_easy_setopt(curl, CURLOPT_HTTPGET, formpost2);
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writefunc_file);
-		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &stringBuffer);
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)self);
         curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);
         curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION, downloadProgress);
+        curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, (void *)self);
 		res2 = curl_easy_perform(curl);
         curl_easy_reset(curl);
 		
@@ -213,7 +228,6 @@ size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s)
 		curl_slist_free_all (headerlist2);
 	}
 	
-    currentDelegate = nil;
     fclose(currentFile);
     
     [downloadURL release];
@@ -223,7 +237,6 @@ size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s)
 
 -(NSDictionary *)listFiles:(NSString *)usernameString password:(NSString *)passwordString
 {
-    currentDelegate = delegate;
 	CURLcode res2;
 	
 	struct curl_httppost *formpost2=NULL;
@@ -240,7 +253,7 @@ size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s)
         curl_easy_setopt(curl, CURLOPT_USERPWD, [userpwdString UTF8String]);
 		curl_easy_setopt(curl, CURLOPT_HTTPGET, formpost2);
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writefunc);
-		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &stringBuffer);
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)self);
 		res2 = curl_easy_perform(curl);
         curl_easy_reset(curl);
 		
@@ -248,7 +261,6 @@ size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s)
 		curl_slist_free_all (headerlist2);
 	}
 	
-    currentDelegate = nil;
     [userpwdString release];
 	
 	return(jsonData);
@@ -256,7 +268,6 @@ size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s)
 
 -(NSDictionary *)showFile:(int)fileID username:(NSString *)usernameString password:(NSString *)passwordString
 {
-    currentDelegate = delegate;
 	CURLcode res2;
 	
 	struct curl_httppost *formpost2=NULL;
@@ -275,15 +286,13 @@ size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s)
         curl_easy_setopt(curl, CURLOPT_USERPWD, [userpwdString UTF8String]);
 		curl_easy_setopt(curl, CURLOPT_HTTPGET, formpost2);
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writefunc);
-		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &stringBuffer);
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)self);
 		res2 = curl_easy_perform(curl);
         curl_easy_reset(curl);
 		
 		curl_formfree(formpost2);
 		curl_slist_free_all (headerlist2);
 	}
-	
-    currentDelegate = nil;
     
     [url release];
     [userpwdString release];
@@ -293,7 +302,6 @@ size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s)
 
 -(NSDictionary *)deleteFile:(int)fileID username:(NSString *)usernameString password:(NSString *)passwordString
 {
-    currentDelegate = delegate;
 	CURLcode res2;
 	
 	struct curl_httppost *formpost2=NULL;
@@ -312,7 +320,7 @@ size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s)
         curl_easy_setopt(curl, CURLOPT_USERPWD, [userpwdString UTF8String]);
 		curl_easy_setopt(curl, CURLOPT_HTTPPOST, formpost2);
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writefunc);
-		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &stringBuffer);
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)self);
 		res2 = curl_easy_perform(curl);
         curl_easy_reset(curl);
 		
@@ -320,16 +328,14 @@ size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s)
 		curl_slist_free_all (headerlist2);
 	}
 	
-    currentDelegate = nil;
     [url release];
     [userpwdString release];
 	
 	return(jsonData);
 }
 
--(NSDictionary *)crateCrate:(NSString *)crateName username:(NSString *)usernameString password:(NSString *)passwordString
+-(NSDictionary *)createCrate:(NSString *)crateName username:(NSString *)usernameString password:(NSString *)passwordString
 {
-    currentDelegate = delegate;
 	CURLcode res2;
 	
 	struct curl_httppost *formpost2=NULL;
@@ -352,7 +358,7 @@ size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s)
         curl_easy_setopt(curl, CURLOPT_USERPWD, [userpwdString UTF8String]);
 		curl_easy_setopt(curl, CURLOPT_HTTPPOST, formpost2);
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writefunc);
-		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &stringBuffer);
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)self);
 		res2 = curl_easy_perform(curl);
         curl_easy_reset(curl);
 		
@@ -360,7 +366,6 @@ size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s)
 		curl_slist_free_all (headerlist2);
 	}
 	
-    currentDelegate = nil;
     [userpwdString release];
 	
 	return(jsonData);
@@ -368,7 +373,6 @@ size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s)
 
 -(NSDictionary *)listCrates:(NSString *)usernameString password:(NSString *)passwordString
 {
-    currentDelegate = delegate;
 	CURLcode res2;
 	
 	struct curl_httppost *formpost2=NULL;
@@ -385,7 +389,7 @@ size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s)
         curl_easy_setopt(curl, CURLOPT_USERPWD, [userpwdString UTF8String]);
 		curl_easy_setopt(curl, CURLOPT_HTTPGET, formpost2);
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writefunc);
-		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &stringBuffer);
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)self);
 		res2 = curl_easy_perform(curl);
         curl_easy_reset(curl);
 		
@@ -393,7 +397,6 @@ size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s)
 		curl_slist_free_all (headerlist2);
 	}
 	
-    currentDelegate = nil;
     [userpwdString release];
 	
 	return(jsonData);
@@ -401,7 +404,6 @@ size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s)
 
 -(NSDictionary *)renameCrate:(int)crateID toName:(NSString *)newName username:(NSString *)usernameString password:(NSString *)passwordString
 {
-    currentDelegate = delegate;
 	CURLcode res2;
 	
 	struct curl_httppost *formpost2=NULL;
@@ -427,7 +429,7 @@ size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s)
         curl_easy_setopt(curl, CURLOPT_USERPWD, [userpwdString UTF8String]);
 		curl_easy_setopt(curl, CURLOPT_HTTPPOST, formpost2);
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writefunc);
-		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &stringBuffer);
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)self);
 		res2 = curl_easy_perform(curl);
         curl_easy_reset(curl);
 		
@@ -435,7 +437,6 @@ size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s)
 		curl_slist_free_all (headerlist2);
 	}
 	
-    currentDelegate = nil;
     [userpwdString release];
     [url release];
 	
@@ -444,7 +445,6 @@ size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s)
 
 -(NSDictionary *)deleteCrate:(int)crateID username:(NSString *)usernameString password:(NSString *)passwordString
 {
-    currentDelegate = delegate;
 	CURLcode res2;
 	
 	struct curl_httppost *formpost2=NULL;
@@ -463,7 +463,7 @@ size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s)
         curl_easy_setopt(curl, CURLOPT_USERPWD, [userpwdString UTF8String]);
 		curl_easy_setopt(curl, CURLOPT_HTTPPOST, formpost2);
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writefunc);
-		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &stringBuffer);
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)self);
 		res2 = curl_easy_perform(curl);
         curl_easy_reset(curl);
 		
@@ -471,7 +471,6 @@ size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s)
 		curl_slist_free_all (headerlist2);
 	}
 	
-    currentDelegate = nil;
     [url release];
     [userpwdString release];
 	

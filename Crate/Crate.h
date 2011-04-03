@@ -35,18 +35,22 @@
 #define CLOUDIE_SUCCESS 0
 #define CLOUDIE_FAIL 1
 
-id <CrateDelegate> currentDelegate;
-FILE *currentFile;
-NSDictionary *jsonData;
-
 @interface Crate : NSObject
 {
+    id <CrateDelegate> delegate;
+    FILE *currentFile;
+    NSDictionary *jsonData;
+    int lastPercent;
+    
 @private
 	CURL *curl;
 	char *stringBuffer;
 	NSString *grabURL;
-    id <CrateDelegate> delegate;
 }
+@property(assign, readwrite)NSDictionary *jsonData;
+@property(assign, readwrite)FILE *currentFile;
+@property(assign, readwrite)id<CrateDelegate> delegate;
+@property(assign, readwrite)int lastPercent;
 
 -(id)initWithDelegate:(id <CrateDelegate>)aDelegate;
 -(NSDictionary *)uploadFile:(NSString *)filePathString username:(NSString *)usernameString password:(NSString *)passwordString crate:(int)crateID;
@@ -55,7 +59,7 @@ NSDictionary *jsonData;
 -(NSDictionary *)listFiles:(NSString *)usernameString password:(NSString *)passwordString;
 -(NSDictionary *)showFile:(int)fileID username:(NSString *)usernameString password:(NSString *)passwordString;
 -(NSDictionary *)deleteFile:(int)fileID username:(NSString *)usernameString password:(NSString *)passwordString;
--(NSDictionary *)crateCrate:(NSString *)crateName username:(NSString *)usernameString password:(NSString *)passwordString;
+-(NSDictionary *)createCrate:(NSString *)crateName username:(NSString *)usernameString password:(NSString *)passwordString;
 -(NSDictionary *)listCrates:(NSString *)usernameString password:(NSString *)passwordString;
 -(NSDictionary *)renameCrate:(int)crateID toName:(NSString *)newName username:(NSString *)usernameString password:(NSString *)passwordString;
 -(NSDictionary *)deleteCrate:(int)crateID username:(NSString *)usernameString password:(NSString *)passwordString;
@@ -67,5 +71,5 @@ NSDictionary *jsonData;
 
 int uploadProgress(void *blah, double t, double d, double ultotal, double ulnow);
 int downloadProgress(void *blah, double t, double d, double ultotal, double ulnow);
-size_t writefunc(void *ptr, size_t size, size_t nmemb, char *s);
+size_t writefunc(void *ptr, size_t size, size_t nmemb, void *s);
 size_t writefunc_file(void *ptr, size_t size, size_t nmemb, char *s);
